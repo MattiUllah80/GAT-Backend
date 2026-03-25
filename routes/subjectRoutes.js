@@ -1,17 +1,27 @@
 import express from "express";
-const router = express.Router();
 import Subject from "../models/Subject.js";
-// GET all subjects
+
+const router = express.Router();
+
+// ✅ GET ALL SUBJECTS
 router.get("/", async (req, res) => {
-  const data = await Subject.find();
-  res.json(data);
+  try {
+    const subjects = await Subject.find();
+    res.json(subjects);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
 });
 
-// ADD subject
+// ✅ ADD SUBJECT
 router.post("/", async (req, res) => {
-  const subject = new Subject(req.body);
-  await subject.save();
-  res.json(subject);
+  try {
+    const subject = new Subject(req.body);
+    await subject.save();
+    res.json(subject);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
 });
 
 export default router;
