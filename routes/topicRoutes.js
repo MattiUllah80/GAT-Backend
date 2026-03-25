@@ -34,4 +34,38 @@ router.post("/", async (req, res) => {
   }
 });
 
+// ✅ UPDATE TOPIC
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedTopic = await Topic.findByIdAndUpdate(
+      req.params.id,      // topic id URL se
+      req.body,           // body mai jo data aya update ke liye
+      { returnDocument: "after"}       // ye option updated doc return kare
+    );
+
+    if (!updatedTopic) {
+      return res.status(404).json({ message: "Topic not found" });
+    }
+
+    res.json(updatedTopic);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+// ✅ DELETE TOPIC
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedTopic = await Topic.findByIdAndDelete(req.params.id);
+
+    if (!deletedTopic) {
+      return res.status(404).json({ message: "Topic not found" });
+    }
+
+    res.json({ message: "Topic deleted successfully", topic: deletedTopic });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
 export default router;

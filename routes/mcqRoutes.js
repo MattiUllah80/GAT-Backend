@@ -34,4 +34,39 @@ router.post("/", async (req, res) => {
   }
 });
 
+// ✅ UPDATE MCQ BY ID
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedMcq = await Mcq.findByIdAndUpdate(
+      req.params.id,     // ID of MCQ to update
+      req.body,          // Data to update
+      { returnDocument: "after" }      // Return the updated document
+    );
+
+    if (!updatedMcq) {
+      return res.status(404).json({ message: "MCQ not found" });
+    }
+
+    res.json(updatedMcq);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+// ✅ DELETE MCQ BY ID
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedMcq = await Mcq.findByIdAndDelete(req.params.id);
+
+    if (!deletedMcq) {
+      return res.status(404).json({ message: "MCQ not found" });
+    }
+
+    res.json({ message: "MCQ deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+
 export default router;
