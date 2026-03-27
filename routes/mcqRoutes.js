@@ -35,10 +35,10 @@ router.post("/", async (req, res) => {
 });
 
 // ✅ UPDATE MCQ BY ID
-router.put("/:id", async (req, res) => {
+router.put("/", async (req, res) => {
   try {
     const updatedMcq = await Mcq.findByIdAndUpdate(
-      req.params.id,     // ID of MCQ to update
+      req.body.id,     // ID of MCQ to update
       req.body,          // Data to update
       { returnDocument: "after" }      // Return the updated document
     );
@@ -54,9 +54,9 @@ router.put("/:id", async (req, res) => {
 });
 
 // ✅ DELETE MCQ BY ID
-router.delete("/:id", async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
-    const deletedMcq = await Mcq.findByIdAndDelete(req.params.id);
+    const deletedMcq = await Mcq.findByIdAndDelete(req.body.id);
 
     if (!deletedMcq) {
       return res.status(404).json({ message: "MCQ not found" });

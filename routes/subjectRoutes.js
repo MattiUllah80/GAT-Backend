@@ -25,10 +25,10 @@ router.post("/", async (req, res) => {
 });
 
 // UPDATE SUBJECT
-router.put("/:id", async (req, res) => {
+router.put("/", async (req, res) => {
   try {
     const updatedSubject = await Subject.findByIdAndUpdate(
-      req.params.id,
+      req.body.id,
       req.body,
       {returnDocument: "after"}
     );
@@ -44,9 +44,9 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE SUBJECT
-router.delete("/:id", async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
-    const deletedSubject = await Subject.findByIdAndDelete(req.params.id);
+    const deletedSubject = await Subject.findByIdAndDelete(req.body.id);
 
     if (!deletedSubject) {
       return res.status(404).json({ message: "Subject not found" });
