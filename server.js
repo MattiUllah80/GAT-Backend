@@ -21,7 +21,7 @@ app.use("/api/topics", topicRoutes);
 app.use("/api/mcqs", mcqRoutes);
 
 // ✅ Health check route
-app.get("/", (req, res) => res.send("GAT API Running ✅"));
+app.get("/", (req, res) => res.send("GAT API Running"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

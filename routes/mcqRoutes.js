@@ -25,6 +25,8 @@ const router = express.Router();
 
 
 // ✅ GET MCQS WITH PAGINATION + OPTIONAL TOPIC FILTER
+
+
 router.get("/", async (req, res) => {
   try {
     // query params
@@ -105,6 +107,23 @@ router.delete("/", async (req, res) => {
     }
 
     res.json({ message: "MCQ deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+// ✅ GET 50 RANDOM MCQS (no topic filter)
+router.get("/random", async (req, res) => {
+  try {
+    const count = parseInt(req.query.count) || 50; // default 50 MCQs
+
+    // MongoDB aggregation with $sample
+    const randomMcqs = await Mcq.aggregate([
+      { $sample: { size: count } }  // randomly select 'count' MCQs
+    ]);
+
+    res.json(randomMcqs);
+
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });
   }
