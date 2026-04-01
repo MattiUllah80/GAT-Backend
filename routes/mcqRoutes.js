@@ -129,5 +129,42 @@ router.get("/random", async (req, res) => {
   }
 });
 
+// ✅ MOVE MCQS TO ANOTHER TOPIC
+router.put("/move", async (req, res) => {
+  try {
+    const { mcqIds, newTopicId } = req.body;
+
+    // validation
+    if (!mcqIds || !Array.isArray(mcqIds) || mcqIds.length === 0) {
+      return res.status(400).json({
+        message: "mcqIds array is required"
+      });
+    }
+
+    if (!newTopicId) {
+      return res.status(400).json({
+        message: "newTopicId is required"
+      });
+    }
+
+    // update many MCQs
+    const result = await Mcq.updateMany(
+      { _id: { $in: mcqIds } },
+      { $set: { topicId: newTopicId } }
+    );
+
+    res.json({
+      message: "MCQs moved successfully",
+      modifiedCount: result.modifiedCount
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      message: "Server Error",
+      error: err.message
+    });
+  }
+});
+
 
 export default router;
