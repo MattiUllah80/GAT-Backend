@@ -16,7 +16,13 @@ router.get("/", async (req, res) => {
 // ✅ GET TOPICS BY SUBJECT
 router.get("/:subjectId", async (req, res) => {
   try {
-    const topics = await Topic.find({ subjectId: req.params.subjectId });
+    const topics = await Topic.find({ subjectId: req.params.subjectId })
+    .collation({
+        locale: "en",
+        numericOrdering: true,
+        strength: 2
+      })
+      .sort({ name: 1 });;
     res.json(topics);
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });

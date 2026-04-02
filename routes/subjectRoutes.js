@@ -3,10 +3,12 @@ import Subject from "../models/Subject.js";
 
 const router = express.Router();
 
-// GET ALL SUBJECTS
+// GET ALL SUBJECTS (ORDER BY NAME ASCENDING)
 router.get("/", async (req, res) => {
   try {
-    const subjects = await Subject.find();
+    const subjects = await Subject.find()
+      .sort({ name: 1 }); // A → Z
+
     res.json(subjects);
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });
